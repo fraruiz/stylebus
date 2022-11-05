@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
 public final class InMemoryUserRepository implements UserRepository {
@@ -21,7 +20,7 @@ public final class InMemoryUserRepository implements UserRepository {
 	}
 
 	private void setUp() {
-		User client = new User(UUID.randomUUID().toString(), UserRole.CLIENT, "John", "Doe", "johndoe@gmail.com", "12345");
+		User client = new User("e97bebac-46f7-4033-96b4-3e9049479e79", UserRole.CLIENT, "John", "Doe", "johndoe@gmail.com", "12345");
 
 		this.values.put(client.id(), client);
 	}

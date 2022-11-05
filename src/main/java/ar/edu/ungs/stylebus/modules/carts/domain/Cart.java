@@ -4,6 +4,7 @@ import ar.edu.ungs.stylebus.modules.products.domain.Product;
 import ar.edu.ungs.stylebus.modules.users.domain.User;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -15,7 +16,7 @@ public final class Cart {
 	private BigDecimal totalAmount;
 
 	public static Cart create(String id, User client) {
-		return new Cart(id, client, Collections.emptyList(), BigDecimal.ZERO);
+		return new Cart(id, client, new ArrayList<>(), BigDecimal.ZERO);
 	}
 
 	public Cart(String id, User client, List<CartItem> items, BigDecimal totalAmount) {
@@ -34,7 +35,8 @@ public final class Cart {
 	}
 
 	public void add(Product product) {
-		this.items.add(new CartItem(product, product.amount()));
+		CartItem item = new CartItem(product, product.amount());
+		this.items.add(item);
 
 		this.totalAmount = this.totalAmount.add(product.amount());
 	}

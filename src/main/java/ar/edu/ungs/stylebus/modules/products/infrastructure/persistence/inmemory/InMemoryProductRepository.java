@@ -116,7 +116,7 @@ public final class InMemoryProductRepository implements ProductRepository {
 		Location barilocheLocation = new Location(new Point(-41.1336437, -71.3117545), "San Carlos de Bariloche");
 		Location mendozaLocation = new Location(new Point(-34.5660941, -58.4682105), "Mendoza");
 
-		Trip trip1 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), retiroLocation, barilocheLocation, Category.PREMIUM, true);
+		Trip trip1 = new Trip("cff96f2c-9535-424e-8f85-5cb0975fbb68", new BigDecimal("1234.0"), retiroLocation, barilocheLocation, Category.PREMIUM, true);
 		Trip trip2 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), barilocheLocation, retiroLocation, Category.PREMIUM, false);
 		Trip trip3 = new Trip(UUID.randomUUID().toString(), new BigDecimal("500.0"), retiroLocation, mendozaLocation, Category.STANDARD, true);
 		Trip trip4 = new Trip(UUID.randomUUID().toString(), new BigDecimal("500.0"), mendozaLocation, retiroLocation, Category.STANDARD_PLUS, false);

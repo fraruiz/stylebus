@@ -15,7 +15,7 @@ public final class GetCartByUserController {
 		this.finder = finder;
 	}
 
-	@GetMapping("/cart/{userId}")
+	@GetMapping("/carts/{userId}")
 	public ResponseEntity<CartResponse> index(@PathVariable String userId) {
 		CartResponse response = finder.find(userId);
 
