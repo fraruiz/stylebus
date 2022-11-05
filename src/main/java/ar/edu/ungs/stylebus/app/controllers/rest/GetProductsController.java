@@ -1,4 +1,4 @@
-package ar.edu.ungs.stylebus.app.controllers;
+package ar.edu.ungs.stylebus.app.controllers.rest;
 
 import ar.edu.ungs.stylebus.modules.products.application.ProductResponse;
 import ar.edu.ungs.stylebus.modules.products.application.search.ProductsSearcher;
@@ -6,12 +6,14 @@ import ar.edu.ungs.stylebus.modules.products.domain.Category;
 import ar.edu.ungs.stylebus.modules.products.domain.ProductCriteria;
 import ar.edu.ungs.stylebus.modules.products.domain.ProductTypeCriteria;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 public final class GetProductsController {
 	private final ProductsSearcher searcher;

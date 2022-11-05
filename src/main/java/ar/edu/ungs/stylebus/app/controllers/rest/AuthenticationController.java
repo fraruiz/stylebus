@@ -1,7 +1,8 @@
-package ar.edu.ungs.stylebus.app.controllers;
+package ar.edu.ungs.stylebus.app.controllers.rest;
 
 import ar.edu.ungs.stylebus.modules.users.application.authenticate.UserAuthenticator;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.Serializable;
 import java.util.Map;
 
+@CrossOrigin
 @RestController
 public final class AuthenticationController {
 	private final UserAuthenticator authenticator;
