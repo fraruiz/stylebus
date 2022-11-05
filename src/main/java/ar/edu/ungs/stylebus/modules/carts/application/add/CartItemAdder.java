@@ -4,7 +4,7 @@ import ar.edu.ungs.stylebus.modules.carts.domain.Cart;
 import ar.edu.ungs.stylebus.modules.carts.domain.CartNotExists;
 import ar.edu.ungs.stylebus.modules.carts.domain.CartRepository;
 import ar.edu.ungs.stylebus.modules.carts.domain.create.CartCreator;
-import ar.edu.ungs.stylebus.modules.carts.domain.find.CartByUserFinder;
+import ar.edu.ungs.stylebus.modules.carts.domain.find.DomainCartByUserFinder;
 import ar.edu.ungs.stylebus.modules.products.domain.Product;
 import ar.edu.ungs.stylebus.modules.products.domain.ProductRepository;
 import ar.edu.ungs.stylebus.modules.products.domain.find.ProductFinder;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public final class CartItemAdder {
 	private final CartRepository cartRepository;
 	private final CartCreator creator;
-	private final CartByUserFinder finder;
+	private final DomainCartByUserFinder finder;
 	private final ProductFinder productFinder;
 
 	public CartItemAdder(CartRepository cartRepository,
@@ -23,7 +23,7 @@ public final class CartItemAdder {
 	                     ProductRepository productRepository) {
 		this.cartRepository = cartRepository;
 		this.creator = new CartCreator(cartRepository, userRepository);
-		this.finder = new CartByUserFinder(cartRepository);
+		this.finder = new DomainCartByUserFinder(cartRepository);
 		this.productFinder = new ProductFinder(productRepository);
 	}
 

@@ -1,6 +1,5 @@
 package ar.edu.ungs.stylebus.modules.products.domain;
 
-import java.awt.*;
 import java.util.Objects;
 
 public final class Location {

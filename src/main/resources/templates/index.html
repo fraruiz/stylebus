@@ -1,70 +1,99 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<title>StyleBus - Login</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+	<meta name="generator" content="Hugo 0.104.2">
+	<title>Fixed top navbar example · Bootstrap v5.2</title>
+
+	<link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/navbar-fixed/">
+	<link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet">
 
 
-	<style>
-
-		@media (min-width: 768px) {
-		}
-
-		html,
-		body {
-			height: 100%;
-		}
-
-		body {
-			display: flex;
-			align-items: center;
-			padding-top: 40px;
-			padding-bottom: 40px;
-			background-color: #f5f5f5;
-		}
-
-		.form-signin {
-			max-width: 330px;
-			padding: 15px;
-		}
-
-		.form-signin .form-floating:focus-within {
-			z-index: 2;
-		}
-
-		.form-signin input[type="email"] {
-			margin-bottom: -1px;
-			border-bottom-right-radius: 0;
-			border-bottom-left-radius: 0;
-		}
-
-		.form-signin input[type="password"] {
-			margin-bottom: 10px;
-			border-top-left-radius: 0;
-			border-top-right-radius: 0;
-		}
-	</style>
+	<!-- Custom styles for this template -->
+	<link href="/navbar-top-fixed.css" rel="stylesheet">
 </head>
-<body class="text-center">
+<body>
 
-<main class="form-signin w-100 m-auto">
-	<form>
-		<img class="mb-4" src="https://getbootstrap.com/docs/5.2/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
-		<h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="#">StyleBus</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+		        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarCollapse">
+			<ul class="navbar-nav me-auto mb-2 mb-md-0">
+			</ul>
 
-		<div class="form-floating">
-			<input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-			<label for="floatingInput">Email address</label>
+			<button th:if="${session}" type="button" class="btn btn-light btn-outline-success" th:href="@{/login}">
+				Iniciar Sesión
+			</button>
+			<button th:unless="${session}" type="button" class="btn btn-light btn-outline-success" th:href="@{/cart}">
+				Carrito
+			</button>
 		</div>
-		<div class="form-floating">
-			<input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-			<label for="floatingPassword">Password</label>
+	</div>
+</nav>
+
+<main class="container">
+	<div class="bg-light p-5 rounded">
+		<div class="row">
+			<div class="col-auto">
+				<p class="text">Productos</p>
+			</div>
+			<div class="col-auto">
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+					<label class="form-check-label" for="inlineRadio1">Ida</label>
+				</div>
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+					<label class="form-check-label" for="inlineRadio2">Ida y Vuelta</label>
+				</div>
+			</div>
 		</div>
-		<button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-		<p class="mt-5 mb-3 text-muted">&copy; 2017–2022</p>
-	</form>
+		<div class="row">
+			<div class="col">
+				<div class="row">
+					<div class="col mr-0" style="padding-right: 0">
+						<select class="form-select" aria-label="Default select example">
+							<option selected>Origen</option>
+							<option value="1">One</option>
+							<option value="2">Two</option>
+							<option value="3">Three</option>
+						</select>
+					</div>
+					<div class="col ml-0" style="padding-left: 0">
+						<select class="form-select" aria-label="Default select example">
+							<option selected>Destino</option>
+							<option value="1">hola</option>
+							<option value="2">Two</option>
+							<option value="3">Three</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="row">
+					<div class="col mr-0" style="padding-right: 0">
+						<input class="form-control" type="date" placeholder="Fecha ida" aria-label="Fecha ida">
+					</div>
+					<div class="col ml-0" style="padding-left: 0">
+						<input class="form-control" type="date" placeholder="Fecha ida y vuelta" aria-label="Fecha ida y vuelta">
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<input class="form-control" type="number" placeholder="Cantidad de pasajeros" aria-label="Cantidad de pasajeros">
+			</div>
+		</div>
+	</div>
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+
+<script src="/assets/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

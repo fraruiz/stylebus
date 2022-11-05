@@ -1,7 +1,6 @@
 package ar.edu.ungs.stylebus.modules.products.application.search;
 
 import ar.edu.ungs.stylebus.modules.products.application.ProductResponse;
-import ar.edu.ungs.stylebus.modules.products.domain.Product;
 import ar.edu.ungs.stylebus.modules.products.domain.ProductCriteria;
 import ar.edu.ungs.stylebus.modules.products.domain.ProductRepository;
 import org.springframework.stereotype.Service;

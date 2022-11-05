@@ -6,10 +6,10 @@ import ar.edu.ungs.stylebus.modules.carts.domain.CartRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public final class CartByUserFinder {
+public final class DomainCartByUserFinder {
 	private final CartRepository repository;
 
-	public CartByUserFinder(CartRepository repository) {
+	public DomainCartByUserFinder(CartRepository repository) {
 		this.repository = repository;
 	}
 

@@ -10,6 +10,14 @@ public final class ProductCriteria {
 	private final Optional<Integer> quantityPassengers;
 	private final Optional<String> busCategory;
 
+	public ProductCriteria() {
+		this(Optional.empty(),
+		     Optional.empty(),
+		     Optional.empty(),
+		     Optional.empty(),
+		     Optional.empty());
+	}
+
 	public ProductCriteria(Optional<String> city,
 	                       Optional<Boolean> going,
 	                       Optional<Boolean> back,

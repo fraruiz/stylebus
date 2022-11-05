@@ -17,6 +17,11 @@ public final class InMemoryUserRepository implements UserRepository {
 	}
 
 	@Override
+	public void save(User user) {
+		this.values.put(user.id(), user);
+	}
+
+	@Override
 	public Optional<User> findById(String id) {
 		return Optional.ofNullable(this.values.get(id));
 	}
