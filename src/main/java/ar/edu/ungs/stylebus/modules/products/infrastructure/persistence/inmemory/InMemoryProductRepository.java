@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public final class InMemoryProductRepository implements ProductRepository {
@@ -19,7 +20,90 @@ public final class InMemoryProductRepository implements ProductRepository {
 
 	@Override
 	public List<Product> search(ProductCriteria criteria) {
-		return null;
+		return this.values.values()
+		                  .stream()
+				          .filter(product -> verifyByType(product, criteria))
+						  .filter(product -> verifyByCity(product, criteria))
+						  .filter(product -> verifyByCategory(product, criteria))
+						  .filter(product -> verifyByGoingBack(product, criteria))
+						  .filter(product -> verifyByPassengersQuantity(product, criteria))
+				          .collect(Collectors.toList());
+	}
+
+	private boolean verifyByPassengersQuantity(Product product, ProductCriteria criteria) {
+		if (Trip.class.equals(product.getClass())) {
+			Trip trip = (Trip) product;
+
+			return criteria.passengersQuantity() <= trip.category().passengersQuantity();
+		}
+
+		return false;
+	}
+
+	private boolean verifyByGoingBack(Product product, ProductCriteria criteria) {
+		if (Trip.class.equals(product.getClass())) {
+			Trip trip = (Trip) product;
+
+			return trip.goingBack().equals(criteria.goingBack());
+		}
+
+		return true;
+	}
+
+	private boolean verifyByCategory(Product product, ProductCriteria criteria) {
+		if (criteria.category().isEmpty()) {
+			return true;
+		}
+
+		if (Trip.class.equals(product.getClass())) {
+			Trip trip = (Trip) product;
+
+			return trip.category().equals(criteria.category().get());
+		}
+
+		return true;
+	}
+
+	private boolean verifyByCity(Product product, ProductCriteria criteria) {
+		if (criteria.city().isEmpty()) {
+			return true;
+		}
+
+		if (Trip.class.equals(product.getClass())) {
+			Trip trip = (Trip) product;
+
+			return trip.origin().city().equalsIgnoreCase(criteria.city().get()) || trip.destiny().city().equalsIgnoreCase(criteria.city().get());
+		}
+
+		if (Excursion.class.equals(product.getClass())) {
+			Excursion excursion = (Excursion) product;
+
+			return excursion.ubication().city().equalsIgnoreCase(criteria.city().get());
+		}
+
+		if (Package.class.equals(product.getClass())) {
+			Package aPackage = ((Package) product);
+
+			return verifyByCity(aPackage.excursion(), criteria);
+		}
+
+		return false;
+	}
+
+	private boolean verifyByType(Product product, ProductCriteria criteria) {
+		if (ProductTypeCriteria.TRIP.equals(criteria.type()) && Trip.class.equals(product.getClass())) {
+			return true;
+		}
+
+		if (ProductTypeCriteria.PACKAGE.equals(criteria.type()) && Package.class.equals(product.getClass())) {
+			return true;
+		}
+
+		if (ProductTypeCriteria.EXCURSION.equals(criteria.type()) && Excursion.class.equals(product.getClass())) {
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override
@@ -32,10 +116,10 @@ public final class InMemoryProductRepository implements ProductRepository {
 		Location barilocheLocation = new Location(new Point(-41.1336437, -71.3117545), "San Carlos de Bariloche");
 		Location mendozaLocation = new Location(new Point(-34.5660941, -58.4682105), "Mendoza");
 
-		Trip trip1 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), retiroLocation, barilocheLocation);
-		Trip trip2 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), barilocheLocation, retiroLocation);
-		Trip trip3 = new Trip(UUID.randomUUID().toString(), new BigDecimal("500.0"), retiroLocation, mendozaLocation);
-		Trip trip4 = new Trip(UUID.randomUUID().toString(), new BigDecimal("500.0"), mendozaLocation, retiroLocation);
+		Trip trip1 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), retiroLocation, barilocheLocation, Category.PREMIUM, true);
+		Trip trip2 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), barilocheLocation, retiroLocation, Category.PREMIUM, false);
+		Trip trip3 = new Trip(UUID.randomUUID().toString(), new BigDecimal("500.0"), retiroLocation, mendozaLocation, Category.STANDARD, true);
+		Trip trip4 = new Trip(UUID.randomUUID().toString(), new BigDecimal("500.0"), mendozaLocation, retiroLocation, Category.STANDARD_PLUS, false);
 
 		Excursion excursion1 = new Excursion(UUID.randomUUID().toString(), new BigDecimal("2.0"), retiroLocation);
 		Excursion excursion2 = new Excursion(UUID.randomUUID().toString(), new BigDecimal("1000.0"), barilocheLocation);

@@ -7,8 +7,6 @@ import ar.edu.ungs.stylebus.modules.users.domain.UserRepository;
 import ar.edu.ungs.stylebus.modules.users.domain.find.UserFinder;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.UUID;
 
 @Service

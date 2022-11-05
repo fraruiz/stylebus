@@ -1,16 +1,24 @@
 package ar.edu.ungs.stylebus.modules.products.domain;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
 public final class Trip extends Product {
 	private final Location origin;
 	private final Location destiny;
+	private final Category category;
+	private final Boolean goingBack;
 
-	public Trip(String id, BigDecimal amount, Location origin, Location destiny) {
+	public Trip(String id,
+	            BigDecimal amount,
+	            Location origin,
+	            Location destiny,
+	            Category category,
+	            Boolean goingBack) {
 		super(id, amount);
 		this.origin = origin;
 		this.destiny = destiny;
+		this.category = category;
+		this.goingBack = goingBack;
 	}
 
 	public Location origin() {
@@ -21,28 +29,11 @@ public final class Trip extends Product {
 		return destiny;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-		if (!super.equals(o)) {
-			return false;
-		}
-		Trip trip = (Trip) o;
-		return Objects.equals(origin, trip.origin) && Objects.equals(destiny, trip.destiny);
+	public Category category() {
+		return category;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(super.hashCode(), origin, destiny);
-	}
-
-	@Override
-	public String toString() {
-		return "Trip{" + "origin=" + origin + ", destiny=" + destiny + '}';
+	public Boolean goingBack() {
+		return goingBack;
 	}
 }

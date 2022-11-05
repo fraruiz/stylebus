@@ -1,77 +1,44 @@
 package ar.edu.ungs.stylebus.modules.products.domain;
 
-import java.util.Objects;
 import java.util.Optional;
 
 public final class ProductCriteria {
+	private final ProductTypeCriteria type;
 	private final Optional<String> city;
-	private final Optional<Boolean> going;
-	private final Optional<Boolean> back;
-	private final Optional<Integer> quantityPassengers;
-	private final Optional<String> busCategory;
+	private final Optional<Category> category;
+	private final Boolean goingBack;
+	private final Integer passengersQuantity;
 
-	public ProductCriteria() {
-		this(Optional.empty(),
-		     Optional.empty(),
-		     Optional.empty(),
-		     Optional.empty(),
-		     Optional.empty());
+
+	public ProductCriteria(ProductTypeCriteria type,
+	                       String city,
+	                       Category category,
+	                       Boolean goingBack,
+	                       Integer passengersQuantity) {
+		this.type = type;
+		this.city = Optional.ofNullable(city);
+		this.category = Optional.ofNullable(category);
+		this.goingBack = goingBack;
+		this.passengersQuantity = passengersQuantity;
 	}
 
-	public ProductCriteria(Optional<String> city,
-	                       Optional<Boolean> going,
-	                       Optional<Boolean> back,
-	                       Optional<Integer> quantityPassengers,
-	                       Optional<String> busCategory) {
-		this.city = city;
-		this.going = going;
-		this.back = back;
-		this.quantityPassengers = quantityPassengers;
-		this.busCategory = busCategory;
+	public ProductTypeCriteria type() {
+		return type;
 	}
 
 	public Optional<String> city() {
 		return city;
 	}
 
-	public Optional<Boolean> going() {
-		return going;
+	public Optional<Category> category() {
+		return category;
 	}
 
-	public Optional<Boolean> back() {
-		return back;
+	public Boolean goingBack() {
+		return goingBack;
 	}
 
-	public Optional<Integer> quantityPassengers() {
-		return quantityPassengers;
-	}
-
-	public Optional<String> busCategory() {
-		return busCategory;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-		ProductCriteria that = (ProductCriteria) o;
-		return Objects.equals(city, that.city) && Objects.equals(going, that.going) &&
-		       Objects.equals(back, that.back) && Objects.equals(quantityPassengers, that.quantityPassengers) &&
-		       Objects.equals(busCategory, that.busCategory);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(city, going, back, quantityPassengers, busCategory);
-	}
-
-	@Override
-	public String toString() {
-		return "ProductCriteria{" + "city=" + city + ", going=" + going + ", back=" + back + ", quantityPassengers=" +
-		       quantityPassengers + ", busCategory=" + busCategory + '}';
+	public Integer passengersQuantity() {
+		return passengersQuantity;
 	}
 }
