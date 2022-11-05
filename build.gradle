@@ -5,7 +5,7 @@ plugins {
 }
 
 bootJar {
-    archiveName = 'application'
+    archiveBaseName = 'application'
 }
 
 group = 'ar.edu.ungs'

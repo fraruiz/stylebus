@@ -1,1 +1,1 @@
-web: java -jar target/application.jar
+web: java -jar build/libs/application-0.0.1-SNAPSHOT.jar
