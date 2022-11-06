@@ -14,11 +14,13 @@ public final class UserAuthenticator {
 		this.finder = new UserByEmailFinder(repository);
 	}
 
-	public void auth(String email, String password) {
+	public String auth(String email, String password) {
 		User user = this.finder.find(email);
 
 		if (!user.password().equals(password)) {
 			throw new UserPasswordInvalid(email);
 		}
+
+		return user.id();
 	}
 }

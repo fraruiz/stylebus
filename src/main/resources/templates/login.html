@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<title>StyleBus - Login</title>
+	<link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+	<style>
+
+		@media (min-width: 768px) {
+		}
+
+		html,
+		body {
+			height: 100%;
+		}
+
+		body {
+			display: flex;
+			align-items: center;
+			padding-top: 40px;
+			padding-bottom: 40px;
+			background-color: #f5f5f5;
+		}
+
+		.form-signin {
+			max-width: 330px;
+			padding: 15px;
+		}
+
+		.form-signin .form-floating:focus-within {
+			z-index: 2;
+		}
+
+		.form-signin input[type="email"] {
+			margin-bottom: -1px;
+			border-bottom-right-radius: 0;
+			border-bottom-left-radius: 0;
+		}
+
+		.form-signin input[type="password"] {
+			margin-bottom: 10px;
+			border-top-left-radius: 0;
+			border-top-right-radius: 0;
+		}
+	</style>
+</head>
+<body class="text-center">
+
+<main class="form-signin w-100 m-auto">
+	<div>
+		<img class="mb-4" src="https://getbootstrap.com/docs/5.2/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+		<h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+
+		<div class="form-floating">
+			<input type="email" class="form-control" id="email" placeholder="name@example.com">
+			<label for="email">Email address</label>
+		</div>
+		<div class="form-floating">
+			<input type="password" class="form-control" id="password" placeholder="Password">
+			<label for="password">Password</label>
+		</div>
+		<button class="w-100 btn btn-lg btn-primary" id="loginButton" onclick="login()" type="submit">Sign in</button>
+		<p class="mt-5 mb-3 text-muted">&copy; 2017–2022</p>
+	</div>
+</main>
+
+<script src="/assets/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+	document.getElementById("loginButton").addEventListener('click', async () => await login())
+
+	async function login() {
+		const email = document.getElementById("email").value
+		const password = document.getElementById("password").value
+
+		const location = window.location.hostname;
+		const endpoint = location === 'localhost' || location === '127.0.0.1' ? `http://${location}:8080/users/auth` : `https://${location}/users/auth`;
+		const settings = {
+			method: 'POST',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ "email": email, "password": password })
+		};
+
+		try {
+			const fetchResponse = await fetch(endpoint, settings);
+
+			const response = await fetchResponse.json()
+
+			if (fetchResponse.ok) {
+				const userId = response['user_id']
+				localStorage.setItem("userId", userId);
+				window.location.href = `/`;
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+</script>
+</body>
+</html>

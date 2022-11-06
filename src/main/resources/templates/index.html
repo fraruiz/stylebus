@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+	<meta name="generator" content="Hugo 0.104.2">
+	<title>Fixed top navbar example · Bootstrap v5.2</title>
+
+	<link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/navbar-fixed/">
+	<link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<style>
+	body {
+		min-height: 75rem;
+		padding-top: 4.5rem;
+	}
+</style>
+
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+	<div class="container-fluid">
+		<a class="navbar-brand" th:href="@{/}">StyleBus</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+		        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarCollapse">
+			<ul class="navbar-nav me-auto mb-2 mb-md-0">
+			</ul>
+
+			<button type="button" class="btn btn-light btn-outline-success" id="loginBtn" onclick="goToLoginPage()">
+				Iniciar Sesión
+			</button>
+			<button type="button" class="btn btn-light btn-outline-success" id="cartBtn" onclick="goToCartPage()">
+				Carrito
+			</button>
+		</div>
+	</div>
+</nav>
+
+<main class="container">
+	<div class="bg-light p-5 rounded">
+		<div class="row align-items-center">
+			<div class="col">
+				<h1 class="mb-3">Productos</h1>
+			</div>
+			<div class="col-auto">
+				<button type="button" class="btn btn-primary" id="searchButton">Buscar</button>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col" id="productTypeDropDown">
+				<select class="form-select" aria-label="Ida" id="productType" onchange="productSelected()">
+					<option value="trip" selected>Viaje</option>
+					<option value="excursion">Excursion</option>
+					<option value="package">Paquete de viaje y excursion</option>
+				</select>
+			</div>
+			<div class="col" id="goinBackDropDown">
+				<select class="form-select" aria-label="Ida" id="goingBack">
+					<option value="false" selected>Ida</option>
+					<option value="true">Ida y vuelta</option>
+				</select>
+			</div>
+			<div class="col" id="categoryDropDown">
+				<select class="form-select" aria-label="Ida" id="category">
+					<option value="premium" selected>Premium</option>
+					<option value="standard_plus">Estandar +</option>
+					<option value="standard">Estandar</option>
+				</select>
+			</div>
+			<div class="col">
+				<input class="form-control" type="text" placeholder="Ciudad" aria-label="Ciudad" id="city">
+			</div>
+			<div class="col">
+				<input class="form-control" type="number" placeholder="Cantidad de pasajeros" id="passengersQuantity" aria-label="Cantidad de pasajeros">
+			</div>
+		</div>
+		<div class="row mt-5">
+			<div class="col" id="productList">
+			</div>
+		</div>
+	</div>
+</main>
+
+
+<script src="/assets/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+	window.addEventListener('load', async () => {
+		if (localStorage.getItem("userId") !== null) {
+			document.getElementById("loginBtn").style.display = 'none'
+			document.getElementById("cartBtn").style.display = 'block'
+		} else {
+			document.getElementById("loginBtn").style.display = 'block'
+			document.getElementById("cartBtn").style.display = 'none'
+		}
+	});
+
+	document.getElementById("searchButton").addEventListener('click', async () => await search())
+
+
+	function goToLoginPage() {
+		window.location.href = `/login`;
+	}
+
+	function goToCartPage() {
+		window.location.href = `/cart`;
+	}
+
+	function productSelected() {
+		const productType = document.getElementById("productType").value
+
+		if (productType !== 'trip') {
+			goinBackDropDown.style.display = 'none'
+			categoryDropDown.style.display = 'none'
+		} else {
+			goinBackDropDown.style.display = 'block'
+			categoryDropDown.style.display = 'block'
+		}
+	}
+
+	async function search() {
+		const productType = document.getElementById("productType").value
+		const goingBack = document.getElementById("goingBack").value
+		const category = document.getElementById("category").value
+		const city = document.getElementById("city").value
+		const passengersQuantity = document.getElementById("passengersQuantity").value
+
+		const filters = `?type=${productType}&city=${city}&category=${category}&going_back=${goingBack}&passengers_quantity=${passengersQuantity}`
+
+		const location = window.location.hostname;
+		const endpoint = location === 'localhost' || location === '127.0.0.1' ? `http://${location}:8080/products` : `https://${location}/products`;
+
+		const settings = {
+			method: 'GET',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+			}
+		};
+
+		try {
+			console.log()
+
+			const fetchResponse = await fetch(endpoint + filters, settings);
+
+			const response = await fetchResponse.json()
+
+			console.log(response)
+
+			setProductList(response);
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	function setProductList(productList) {
+		const productListNode = document.getElementById("productList")
+
+		let html = ""
+
+		productList.forEach(element => {
+			html += `<div class="card mb-3">
+						<div class="card-body">
+							<h5 class="card-title">${element['origin']['city']} - ${element['destiny']['city']}</h5>
+							<p class="card-text">$${element['amount']}</p>
+							<button onclick="addProductToCart('${element['id']}')" class="btn btn-primary">Añadir al carrito</button>
+							<button onclick="alert('Proximamente')" class="btn btn-secondary">Comprar</button>
+						</div>
+					</div>`
+		});
+
+		productListNode.innerHTML = html
+	}
+
+	function addProductToCart(productId) {
+		if (localStorage.getItem("userId") !== null) {
+			const userId = localStorage.getItem("userId");
+
+			const location = window.location.hostname;
+			const endpoint = location === 'localhost' || location === '127.0.0.1' ? `http://${location}:8080/carts/${userId}/items/${productId}` : `https://${location}/carts/${userId}/items/${productId}`;
+
+			const settings = {
+				method: 'POST',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json',
+				}
+			};
+
+			fetch(endpoint, settings)
+					.then(response => response.json())
+					.then(data => alert("Producto añadido!"))
+					.catch(error => console.error(error));
+		} else {
+			goToLoginPage()
+		}
+	}
+</script>
+</body>
+</html>

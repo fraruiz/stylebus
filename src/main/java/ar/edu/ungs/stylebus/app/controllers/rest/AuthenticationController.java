@@ -25,9 +25,9 @@ public final class AuthenticationController {
 		String password = (String) body.get("password");
 
 		try {
-			this.authenticator.auth(email, password);
+			String userId = this.authenticator.auth(email, password);
 
-			return ResponseEntity.ok(Map.of("message", "user authenticated"));
+			return ResponseEntity.ok(Map.of("message", "user authenticated", "user_id", userId));
 		} catch (Exception error) {
 			return ResponseEntity.status(401).body(Map.of("message", error.getMessage()));
 		}
