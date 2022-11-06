@@ -22,12 +22,13 @@ public final class InMemoryProductRepository implements ProductRepository {
 	public List<Product> search(ProductCriteria criteria) {
 		return this.values.values()
 		                  .stream()
-				          .filter(product -> verifyByType(product, criteria))
-						  .filter(product -> verifyByCity(product, criteria))
-						  .filter(product -> verifyByCategory(product, criteria))
-						  .filter(product -> verifyByGoingBack(product, criteria))
-						  .filter(product -> verifyByPassengersQuantity(product, criteria))
-				          .collect(Collectors.toList());
+		                  .filter(product -> verifyByCategory(product, criteria))
+		                  .filter(product -> verifyByGoingBack(product, criteria))
+		                  .filter(product -> verifyByPassengersQuantity(product, criteria))
+		                  .filter(product -> verifyByType(product, criteria))
+		                  .filter(product -> verifyByCity(product, criteria))
+		                  .sorted(Comparator.comparing(Product::amount))
+		                  .collect(Collectors.toList());
 	}
 
 	private boolean verifyByPassengersQuantity(Product product, ProductCriteria criteria) {
@@ -37,7 +38,7 @@ public final class InMemoryProductRepository implements ProductRepository {
 			return criteria.passengersQuantity() <= trip.category().passengersQuantity();
 		}
 
-		return false;
+		return true;
 	}
 
 	private boolean verifyByGoingBack(Product product, ProductCriteria criteria) {
@@ -112,31 +113,88 @@ public final class InMemoryProductRepository implements ProductRepository {
 	}
 
 	private void setup() {
-		Location retiroLocation = new Location(new Point(-34.5893799, -58.3855431), "Terminal de Omnibus Retiro");
-		Location barilocheLocation = new Location(new Point(-41.1336437, -71.3117545), "San Carlos de Bariloche");
+		Location bsAsLocation = new Location(new Point(-34.5893799, -58.3855431), "Buenos Aires");
+		Location barilocheLocation = new Location(new Point(-41.1336437, -71.3117545), "Bariloche");
 		Location mendozaLocation = new Location(new Point(-34.5660941, -58.4682105), "Mendoza");
 
-		Trip trip1 = new Trip("cff96f2c-9535-424e-8f85-5cb0975fbb68", new BigDecimal("1234.0"), retiroLocation, barilocheLocation, Category.PREMIUM, true);
-		Trip trip2 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), barilocheLocation, retiroLocation, Category.PREMIUM, false);
-		Trip trip3 = new Trip(UUID.randomUUID().toString(), new BigDecimal("500.0"), retiroLocation, mendozaLocation, Category.STANDARD, true);
-		Trip trip4 = new Trip(UUID.randomUUID().toString(), new BigDecimal("500.0"), mendozaLocation, retiroLocation, Category.STANDARD_PLUS, false);
-
-		Excursion excursion1 = new Excursion(UUID.randomUUID().toString(), new BigDecimal("2.0"), retiroLocation);
-		Excursion excursion2 = new Excursion(UUID.randomUUID().toString(), new BigDecimal("1000.0"), barilocheLocation);
-		Excursion excursion3 = new Excursion(UUID.randomUUID().toString(), new BigDecimal("500.0"), mendozaLocation);
-
-		Package packageProduct = new Package(UUID.randomUUID().toString(), new BigDecimal("1534.0"), excursion1, trip2);
-		Package packageProduct2 = new Package(UUID.randomUUID().toString(), new BigDecimal("3000.0"), excursion2, trip1);
-		Package packageProduct3 = new Package(UUID.randomUUID().toString(), new BigDecimal("2000.0"), excursion3, trip4);
+		Trip trip1 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), bsAsLocation, barilocheLocation, Category.PREMIUM, true);
+		Trip trip2 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), bsAsLocation, barilocheLocation, Category.STANDARD_PLUS, true);
+		Trip trip3 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), bsAsLocation, barilocheLocation, Category.STANDARD, true);
 
 		this.values.put(trip1.id(), trip1);
-		this.values.put(trip2.id(), trip2);
-		this.values.put(trip3.id(), trip3);
+		this.values.put(trip2.id(), trip1);
+		this.values.put(trip3.id(), trip1);
+
+		Trip trip4 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), bsAsLocation, barilocheLocation, Category.PREMIUM, false);
+		Trip trip5 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), bsAsLocation, barilocheLocation, Category.STANDARD_PLUS, false);
+		Trip trip6 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), bsAsLocation, barilocheLocation, Category.STANDARD, false);
+
 		this.values.put(trip4.id(), trip4);
+		this.values.put(trip5.id(), trip5);
+		this.values.put(trip6.id(), trip6);
+
+		Trip trip7 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), barilocheLocation, bsAsLocation, Category.PREMIUM, true);
+		Trip trip8 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), barilocheLocation, bsAsLocation, Category.STANDARD_PLUS, true);
+		Trip trip9 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), barilocheLocation, bsAsLocation, Category.STANDARD, true);
+
+		this.values.put(trip7.id(), trip7);
+		this.values.put(trip8.id(), trip8);
+		this.values.put(trip9.id(), trip9);
+
+		Trip trip10 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), barilocheLocation, bsAsLocation, Category.PREMIUM, false);
+		Trip trip11 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), barilocheLocation, bsAsLocation, Category.STANDARD_PLUS, false);
+		Trip trip12 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), barilocheLocation, bsAsLocation, Category.STANDARD, false);
+
+		this.values.put(trip10.id(), trip10);
+		this.values.put(trip11.id(), trip11);
+		this.values.put(trip12.id(), trip12);
+
+		Trip trip13 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), bsAsLocation, mendozaLocation, Category.PREMIUM, true);
+		Trip trip14 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), bsAsLocation, mendozaLocation, Category.STANDARD_PLUS, true);
+		Trip trip15 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), bsAsLocation, mendozaLocation, Category.STANDARD, true);
+
+		this.values.put(trip13.id(), trip13);
+		this.values.put(trip14.id(), trip14);
+		this.values.put(trip15.id(), trip15);
+
+		Trip trip16 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), bsAsLocation, mendozaLocation, Category.PREMIUM, false);
+		Trip trip17 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), bsAsLocation, mendozaLocation, Category.STANDARD_PLUS, false);
+		Trip trip18 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), bsAsLocation, mendozaLocation, Category.STANDARD, false);
+
+		this.values.put(trip16.id(), trip16);
+		this.values.put(trip17.id(), trip17);
+		this.values.put(trip18.id(), trip18);
+
+		Trip trip20 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), mendozaLocation, bsAsLocation, Category.PREMIUM, true);
+		Trip trip21 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), mendozaLocation, bsAsLocation, Category.STANDARD_PLUS, true);
+		Trip trip22 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), mendozaLocation, bsAsLocation, Category.STANDARD, true);
+
+		this.values.put(trip20.id(), trip20);
+		this.values.put(trip21.id(), trip21);
+		this.values.put(trip22.id(), trip22);
+
+		Trip trip23 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), mendozaLocation, bsAsLocation, Category.PREMIUM, false);
+		Trip trip24 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), mendozaLocation, bsAsLocation, Category.STANDARD_PLUS, false);
+		Trip trip25 = new Trip(UUID.randomUUID().toString(), new BigDecimal("1234.0"), mendozaLocation, bsAsLocation, Category.STANDARD, false);
+
+		this.values.put(trip23.id(), trip23);
+		this.values.put(trip24.id(), trip24);
+		this.values.put(trip25.id(), trip25);
+
+
+		Excursion excursion1 = new Excursion(UUID.randomUUID().toString(), new BigDecimal("1234.0"), bsAsLocation);
+		Excursion excursion2 = new Excursion(UUID.randomUUID().toString(), new BigDecimal("1234.0"), barilocheLocation);
+		Excursion excursion3 = new Excursion(UUID.randomUUID().toString(), new BigDecimal("1234.0"), mendozaLocation);
+
 		this.values.put(excursion1.id(), excursion1);
 		this.values.put(excursion2.id(), excursion2);
 		this.values.put(excursion3.id(), excursion3);
-		this.values.put(packageProduct.id(), packageProduct);
+
+		Package packageProduct1 = new Package(UUID.randomUUID().toString(), new BigDecimal("1234.0"), excursion1, trip20);
+		Package packageProduct2 = new Package(UUID.randomUUID().toString(), new BigDecimal("1234.0"), excursion2, trip7);
+		Package packageProduct3 = new Package(UUID.randomUUID().toString(), new BigDecimal("1234.0"), excursion3, trip3);
+
+		this.values.put(packageProduct1.id(), packageProduct1);
 		this.values.put(packageProduct2.id(), packageProduct2);
 		this.values.put(packageProduct3.id(), packageProduct3);
 	}
