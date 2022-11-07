@@ -164,6 +164,19 @@
 		let html = ""
 
 		productList.forEach(element => {
+			let title
+			switch (element['type']) {
+				case 'trip':
+					title = "Viaje: " + element['origin']['city'] + " - " + element['destiny']['city']
+					break;
+				case 'package':
+					title = "Excursion: " + element['excursion']['location']['city']
+					break;
+				default:
+					title = "Paquete: " + element['location']['city']
+					break;
+			}
+
 			html += `<div class="card mb-3">
 						<div class="card-body" id="product-card">
 							<h5 class="card-title">${element['origin']['city']} - ${element['destiny']['city']}</h5>

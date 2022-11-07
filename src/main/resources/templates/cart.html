@@ -36,37 +36,16 @@
                                     <div class="d-flex justify-content-between align-items-center mb-4">
                                         <div>
                                             <p class="mb-1">Carrito de compras</p>
-                                            <p class="mb-0">Tienes 1 productos</p>
+                                            <p class="mb-0" id="productsQuantity"></p>
                                         </div>
                                         <div>
                                             <p class="mb-0"><span class="text-muted">Sort by:</span> <a href="#!"
                                                                                                         class="text-body">price <i class="fas fa-angle-down mt-1"></i></a></p>
                                         </div>
                                     </div>
+	                                <div id="cartItemsList">
 
-                                    <div class="card mb-3">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <div class="d-flex flex-row align-items-center">
-                                                    <div>
-                                                        <img
-                                                                src="https://upload.wikimedia.org/wikipedia/commons/4/45/Provincia_cibeles_es_un_proyecto_dise%C3%B1ado_por_Grupo_Link.jpg"
-                                                                class="img-fluid rounded-3" alt="Shopping item" style="width: 65px;">
-                                                    </div>
-                                                    <div class="ms-3">
-                                                        <h5>Alla le Compraron un viaje</h5>
-                                                        <p class="small mb-0">Premium, Ida</p>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex flex-row align-items-center">
-                                                    <div style="width: 80px;">
-                                                        <h5 class="mb-0">$900</h5>
-                                                    </div>
-                                                    <a href="#!" style="color: #cecece;"><i class="fas fa-trash-alt"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+	                                </div>
                                     <button type="submit" class="btn btn-primary">Comprar</button>
                                 </div>
                             </div>
@@ -76,4 +55,87 @@
             </div>
         </div>
     </section>
+
+	<script>
+		window.addEventListener('load', async () => await search());
+
+		function setCartItems(cartItemsList) {
+			const cartItemsListNode = document.getElementById("cartItemsList")
+
+			let html = ""
+
+			cartItemsList.forEach(element => {
+
+				let title
+				switch (element['product']['type']) {
+					case 'trip':
+						title = "Viaje: " + element['product']['origin']['city'] + " - " + element['product']['destiny']['city']
+						break;
+					case 'package':
+						title = "Excursion: " + element['product']['excursion']['location']['city']
+						break;
+					default:
+						title = "Paquete: " + element['product']['location']['city']
+						break;
+				}
+
+				const price = element['amount']
+
+				html += `<div class="card mb-3">
+			                                <div class="card-body">
+				                                <div class="d-flex justify-content-between">
+					                                <div class="d-flex flex-row align-items-center">
+						                                <div>
+							                                <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Provincia_cibeles_es_un_proyecto_dise%C3%B1ado_por_Grupo_Link.jpg"
+									                                class="img-fluid rounded-3" alt="Shopping item" style="width: 65px;">
+						                                </div>
+						                                <div class="ms-3">
+							                                <h5>${title}</h5>
+						                                </div>
+					                                </div>
+					                                <div class="d-flex flex-row align-items-center">
+						                                <div style="width: 80px;">
+							                                <h5 class="mb-0">$${price}</h5>
+						                                </div>
+						                                <a href="#!" style="color: #cecece;"><i class="fas fa-trash-alt"></i></a>
+					                                </div>
+				                                </div>
+			                                </div>
+		                                </div>`
+			});
+
+			cartItemsListNode.innerHTML = html
+		}
+
+		async function search() {
+			const userId = localStorage.getItem("userId")
+
+			const location = window.location.hostname;
+			const endpoint = location === 'localhost' || location === '127.0.0.1' ? `http://${location}:8080/carts/${userId}` : `https://${location}/carts/${userId}`;
+
+			const settings = {
+				method: 'GET',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json',
+				}
+			};
+
+			try {
+				const fetchResponse = await fetch(endpoint, settings);
+
+				const response = await fetchResponse.json()
+
+				console.log(response)
+
+				const items = response['items'];
+
+				setCartItems(items);
+
+				productsQuantity.innerHTML = `Tienes ${items.length} productos`
+			} catch (e) {
+				console.log(e);
+			}
+		}
+	</script>
 </body>
