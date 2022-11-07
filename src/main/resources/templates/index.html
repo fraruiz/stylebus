@@ -72,10 +72,10 @@
 					<option value="standard">Estandar</option>
 				</select>
 			</div>
-			<div class="col">
+			<div class="col" id="input-city">
 				<input class="form-control" type="text" placeholder="Ciudad" aria-label="Ciudad" id="city">
 			</div>
-			<div class="col">
+			<div class="col" id="input-passengers">
 				<input class="form-control" type="number" min="1" max="30" placeholder="Cantidad de pasajeros" id="passengersQuantity" aria-label="Cantidad de pasajeros">
 			</div>
 		</div>
@@ -165,7 +165,7 @@
 
 		productList.forEach(element => {
 			html += `<div class="card mb-3">
-						<div class="card-body">
+						<div class="card-body" id="product-card">
 							<h5 class="card-title">${element['origin']['city']} - ${element['destiny']['city']}</h5>
 							<p class="card-text">$${element['amount']}</p>
 							<button onclick="addProductToCart('${element['id']}')" class="btn btn-primary">Añadir al carrito</button>
