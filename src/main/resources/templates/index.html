@@ -170,16 +170,16 @@
 					title = "Viaje: " + element['origin']['city'] + " - " + element['destiny']['city']
 					break;
 				case 'package':
-					title = "Excursion: " + element['excursion']['location']['city']
+					title = "Paquete: " + element['excursion']['location']['city']
 					break;
 				default:
-					title = "Paquete: " + element['location']['city']
+					title = "Excursion: " + element['location']['city']
 					break;
 			}
 
 			html += `<div class="card mb-3">
-						<div class="card-body" id="product-card">
-							<h5 class="card-title">${element['origin']['city']} - ${element['destiny']['city']}</h5>
+						<div class="card-body" id="${element['id']}">
+							<h5 class="card-title">${title}</h5>
 							<p class="card-text">$${element['amount']}</p>
 							<button onclick="addProductToCart('${element['id']}')" class="btn btn-primary">Añadir al carrito</button>
 							<button onclick="alert('Proximamente')" class="btn btn-secondary">Comprar</button>
