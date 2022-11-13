@@ -6,7 +6,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
 	<meta name="generator" content="Hugo 0.104.2">
-	<title>Fixed top navbar example · Bootstrap v5.2</title>
+	<title>Stylebus - Marketplace</title>
 
 	<link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/navbar-fixed/">
 	<link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -129,6 +129,31 @@
 		const category = document.getElementById("category").value
 		const city = document.getElementById("city").value
 		const passengersQuantity = document.getElementById("passengersQuantity").value
+
+		if (city === undefined || city === "") {
+			alert("Por favor, complete la ciudad de destino")
+			return
+		}
+
+		if (city.length > 20) {
+			alert("Por favor, ciudad de destino no puede ser mayor a 20")
+			return
+		}
+
+		if (/\d/.test(city) || /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(city)) {
+			alert("Por favor, ciudad de destino no contener una letra o caracter especial")
+			return
+		}
+
+		if (passengersQuantity <= 0) {
+			alert("Por favor, la cantidad de pasajeros no puede ser menor igual a cero")
+			return
+		}
+
+		if (passengersQuantity > 30) {
+			alert("Por favor, la cantidad de pasajeros no puede ser mayor a treinta")
+			return
+		}
 
 		const filters = `?type=${productType}&city=${city}&category=${category}&going_back=${goingBack}&passengers_quantity=${passengersQuantity}`
 
