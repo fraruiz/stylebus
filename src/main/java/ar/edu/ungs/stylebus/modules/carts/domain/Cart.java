@@ -5,7 +5,6 @@ import ar.edu.ungs.stylebus.modules.users.domain.User;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,6 +38,13 @@ public final class Cart {
 		this.items.add(item);
 
 		this.totalAmount = this.totalAmount.add(product.amount());
+	}
+
+	public void delete(Product product) {
+		this.items.stream()
+		          .filter(x -> x.product().equals(product))
+		          .findFirst()
+		          .ifPresent(this.items::remove);
 	}
 
 	public User client() {
