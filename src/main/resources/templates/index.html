@@ -45,6 +45,10 @@
 </nav>
 
 <main class="container">
+	<div class="alert alert-primary alert-dismissible fade show" id="productAddedAlert" role="alert">
+		Producto añadido!
+		<button type="button" class="btn-close" onclick="closeAlert('productAddedAlert')"></button>
+	</div>
 	<div class="bg-light p-5 rounded">
 		<div class="row align-items-center">
 			<div class="col">
@@ -94,6 +98,8 @@
 
 <script>
 	window.addEventListener('load', async () => {
+		document.getElementById("productAddedAlert").style.display = 'none'
+
 		if (localStorage.getItem("userId") !== null) {
 			document.getElementById("loginBtn").style.display = 'none'
 			document.getElementById("cartBtn").style.display = 'block'
@@ -243,11 +249,15 @@
 
 			fetch(endpoint, settings)
 					.then(response => response.json())
-					.then(data => alert("Producto añadido!"))
+					.then(data => document.getElementById("productAddedAlert").style.display = 'block')
 					.catch(error => console.error(error));
 		} else {
 			goToLoginPage()
 		}
+	}
+
+	function closeAlert(id) {
+		document.getElementById(id).style.display = 'none'
 	}
 </script>
 </body>
