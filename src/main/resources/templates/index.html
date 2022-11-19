@@ -37,6 +37,9 @@
 			<button type="button" class="btn btn-light btn-outline-success" id="cartBtn" onclick="goToCartPage()">
 				Carrito
 			</button>
+			<button type="button" style="margin-left: 5px;" class="btn btn-light btn-outline-danger" id="closeSessionBtn" onclick="closeSession()">
+				Cerrar sesión
+			</button>
 		</div>
 	</div>
 </nav>
@@ -94,14 +97,22 @@
 		if (localStorage.getItem("userId") !== null) {
 			document.getElementById("loginBtn").style.display = 'none'
 			document.getElementById("cartBtn").style.display = 'block'
+			document.getElementById("closeSessionBtn").style.display = 'block'
 		} else {
 			document.getElementById("loginBtn").style.display = 'block'
 			document.getElementById("cartBtn").style.display = 'none'
+			document.getElementById("closeSessionBtn").style.display = 'none'
 		}
 	});
 
 	document.getElementById("searchButton").addEventListener('click', async () => await search())
 
+
+	function closeSession() {
+		localStorage.removeItem("userId")
+		alert("Sesión cerrada!")
+		location.reload()
+	}
 
 	function goToLoginPage() {
 		window.location.href = `/login`;
